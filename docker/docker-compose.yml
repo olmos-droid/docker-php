@@ -3,14 +3,14 @@ services:
   #PHP Service
   php-fpm:
     image: php:${PHP_V}-fpm
-    container_name: PHP_${DOCKER_NAME}
     restart: unless-stopped
+    container_name: PHP_${DOCKER_NAME}
     entrypoint: bash /scripts/init.sh
+    working_dir: /app
     tty: true
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
-    working_dir: /app
     volumes:
       - ${PROJECT_PATH}:/app
       - ${DOCKER_PATH}/php/init.sh:/scripts/init.sh
@@ -22,17 +22,18 @@ services:
 
   ##Nginx Service
   nginx_docusign:
-    hostname: server_${DOCKER_NAME}
     image: nginx:alpine
-    container_name: webserver_${DOCKER_NAME}
     restart: unless-stopped
+    container_name: webserver_${DOCKER_NAME}
+    hostname: server_${DOCKER_NAME}
+    working_dir: /app
     tty: true
     ports:
       - ${DEBUG_PORT}:${SERVER_PORT}
       - ${DEBUG_SPORT}:${SSL_PORT}
     volumes:
-      - ${DOCKER_PATH}/logs/:/var/log/nginx/
       - ${PROJECT_PATH}:/app
+      - ${DOCKER_PATH}/logs/:/var/log/nginx/
       - ${DOCKER_PATH}/nginx/conf.d/:/etc/nginx/conf.d/
     depends_on: 
       - php-fpm
