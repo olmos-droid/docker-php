@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product's List</title>
     <script>
-function start() {
+function start_p2() {
     window.location.href="components/prod_list_01.php";
 }
 </script>
-<body onload="start()">
+<body onload="start_p2()">
     
 </body>
 </html>
